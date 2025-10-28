@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Destinations - Places I've visited and loved. Get inspired for your own travel adventures.">
+  <title>中国旅行目的地 | My Travel Adventures</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico">
+  <style>
+    /* Destinations specific styles */
+    #destinations-hero {
+      padding: 120px 20px;
+      text-align: center;
+      background-color: #2c3e50;
+      color: white;
+      margin-bottom: 80px;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('C:/Users/21441/Desktop/web/photos/微信图片_20251022095600.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    
+    #destinations-hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    
+    #destinations-hero p {
+      font-size: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      opacity: 0.95;
+    }
+    
+    .destinations-intro {
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+    }
+    
+    .destinations-intro h2 {
+      font-size: 36px;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    
+    .destinations-intro p {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #555;
+    }
+    
+    .destinations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 40px;
+      margin-bottom: 80px;
+      padding: 0 20px;
+    }
+    
+    .destination-card {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .destination-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .destination-image {
+      height: 250px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .destination-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .destination-card:hover .destination-image img {
+      transform: scale(1.05);
+    }
+    
+    .destination-content {
+      padding: 30px;
+    }
+    
+    .destination-content h3 {
+      font-size: 24px;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+    
+    .destination-content .location-tag {
+      display: inline-block;
+      background-color: #f8f9fa;
+      color: #7f8c8d;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    
+    .destination-content p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #555;
+      margin-bottom: 25px;
+    }
+    
+    .destination-highlights {
+      margin-bottom: 25px;
+    }
+    
+    .destination-highlights h4 {
+      font-size: 18px;
+      color: #34495e;
+      margin-bottom: 15px;
+    }
+    
+    .highlight-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .highlight-list li {
+      margin-bottom: 10px;
+      padding-left: 25px;
+      position: relative;
+      font-size: 15px;
+      color: #666;
+    }
+    
+    .highlight-list li::before {
+      content: '✓';
+      color: #3498db;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    
+    .btn-destination {
+      display: inline-block;
+      background-color: #3498db;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-destination:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+    
+    .featured-destination {
+      background-color: #f8f9fa;
+      padding: 80px 0;
+      margin-bottom: 80px;
+    }
+    
+    .featured-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      padding: 0 20px;
+    }
+    
+    .featured-image {
+      flex: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .featured-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .featured-text {
+      flex: 1;
+      text-align: left;
+    }
+    
+    .featured-text h2 {
+      font-size: 36px;
+      color: #2c3e50;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    .featured-text h2::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background-color: #3498db;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+    
+    .featured-text p {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 25px;
+    }
+    
+    .featured-text .btn-primary {
+      margin-top: 20px;
+    }
+    
+    .travel-tips {
+      text-align: center;
+      padding: 0 20px;
+      margin-bottom: 80px;
+    }
+    
+    .travel-tips h2 {
+      font-size: 36px;
+      color: #2c3e50;
+      margin-bottom: 40px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .travel-tips h2::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background-color: #3498db;
+      margin: 15px auto 0;
+    }
+    
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .tip-card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      text-align: left;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .tip-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tip-card h3 {
+      font-size: 20px;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .tip-card h3::before {
+      content: '💡';
+      margin-right: 10px;
+    }
+    
+    .tip-card p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #555;
+    }
+    
+    @media (max-width: 992px) {
+      .featured-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .featured-text h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      
+      .featured-image {
+        margin-bottom: 40px;
+      }
+      
+      #destinations-hero h1 {
+        font-size: 40px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      #destinations-hero {
+        padding: 80px 20px;
+      }
+      
+      #destinations-hero h1 {
+        font-size: 32px;
+      }
+      
+      #destinations-hero p {
+        font-size: 18px;
+      }
+      
+      .destinations-intro h2,
+      .featured-text h2,
+      .travel-tips h2 {
+        font-size: 28px;
+      }
+      
+      .destinations-grid,
+      .tips-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+ <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <div class="brand">
+                  <div class="brand-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
+                    </div>
+                    <h2 class="brand-title">My Travel<span>Journey</span></h2>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="gallery.html" class="nav-link">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="destinations.html" class="nav-link">Destinations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.html" class="nav-link">About Me</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+  <div id="main-content">
+    <div id="destinations-hero">
+      <h1>My Travel Destinations</h1>
+      <p>Explore the places I've visited across China and beyond. From tropical beaches to historic cities, discover the stories behind each journey.</p>
+    </div>
+    
+    <div class="destinations-intro">
+      <h2>Wanderlust Chronicles</h2>
+      <p>My travel journey has taken me to diverse corners of China, from the tropical paradise of Hainan to the ancient cities steeped in history. Each destination has left unforgettable memories and unique experiences.</p>
+    </div>
+    
+    <div class="destinations-grid">
+      <!-- Hainan -->
+      <div class="destination-card">
+        <div class="destination-image">
+          <img src="C:/Users/21441/Desktop/web/photos/微信图片_20251022095600.jpg" alt="Hainan Beach Sunset">
+        </div>
+        <div class="destination-content">
+          <h3>Hainan Island</h3>
+          <span class="location-tag">🏝️ South China</span>
+          <p>A tropical paradise known as the "Hawaii of China". Hainan offers pristine beaches, crystal clear waters, and lush landscapes perfect for relaxation and adventure.</p>
+          <div class="destination-highlights">
+            <h4>Highlights</h4>
+            <ul class="highlight-list">
+              <li>Fenjiezhou Island climbing adventures</li>
+              <li>Beautiful beach sunsets and relaxation</li>
+              <li>Tropical climate year-round</li>
+              <li>Fresh seafood and local cuisine</li>
+            </ul>
+          </div>
+          <a href="gallery.html" class="btn-destination">View Gallery</a>
+        </div>
+      </div>
+
+      <!-- Nanjing -->
+      <div class="destination-card">
+        <div class="destination-image">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090548.jpg" alt="Nanjing Landscape">
+        </div>
+        <div class="destination-content">
+          <h3>Nanjing</h3>
+          <span class="location-tag">🏛️ Jiangsu Province</span>
+          <p>An ancient capital with a rich history spanning over 2,500 years. Nanjing blends traditional Chinese culture with modern development, offering a unique travel experience.</p>
+          <div class="destination-highlights">
+            <h4>Highlights</h4>
+            <ul class="highlight-list">
+              <li>Historic landmarks and museums</li>
+              <li>Beautiful city parks and lakes</li>
+              <li>Delicious local cuisine</li>
+              <li>Rich cultural heritage</li>
+            </ul>
+          </div>
+          <a href="gallery.html" class="btn-destination">View Gallery</a>
+        </div>
+      </div>
+
+      <!-- Guangzhou -->
+      <div class="destination-card">
+        <div class="destination-image">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090543.jpg" alt="Guangzhou Museum">
+        </div>
+        <div class="destination-content">
+          <h3>Guangzhou</h3>
+          <span class="location-tag">🏙️ Guangdong Province</span>
+          <p>A vibrant metropolis and a major gateway to southern China. Guangzhou is famous for its delicious food, modern architecture, and cultural attractions.</p>
+          <div class="destination-highlights">
+            <h4>Highlights</h4>
+            <ul class="highlight-list">
+              <li>Famous museums showcasing local history</li>
+              <li>Dim sum and Cantonese cuisine</li>
+              <li>Canton Tower and modern skyline</li>
+              <li>Traditional markets and temples</li>
+            </ul>
+          </div>
+          <a href="gallery.html" class="btn-destination">View Gallery</a>
+        </div>
+      </div>
+
+      <!-- Chaozhou -->
+      <div class="destination-card">
+        <div class="destination-image">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090600.jpg" alt="Chaozhou Post Office">
+        </div>
+        <div class="destination-content">
+          <h3>Chaozhou</h3>
+          <span class="location-tag">🏮 Guangdong Province</span>
+          <p>A historic city known for its traditional architecture, Gongfu tea culture, and delicious local cuisine. Chaozhou preserves many aspects of ancient Chinese culture.</p>
+          <div class="destination-highlights">
+            <h4>Highlights</h4>
+            <ul class="highlight-list">
+              <li>Historic buildings and ancient streets</li>
+              <li>Famous Gongfu tea culture</li>
+              <li>Delicious and unique local dishes</li>
+              <li>Traditional handicrafts</li>
+            </ul>
+          </div>
+          <a href="gallery.html" class="btn-destination">View Gallery</a>
+        </div>
+      </div>
+
+      <!-- Quanzhou -->
+      <div class="destination-card">
+        <div class="destination-image">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090655.jpg" alt="Quanzhou Temple">
+        </div>
+        <div class="destination-content">
+          <h3>Quanzhou</h3>
+          <span class="location-tag">🛕 Fujian Province</span>
+          <p>My hometown and a historic port city that was once the starting point of the Maritime Silk Road. Quanzhou features diverse cultural influences and ancient architecture.</p>
+          <div class="destination-highlights">
+            <h4>Highlights</h4>
+            <ul class="highlight-list">
+              <li>Ancient temples and historic sites</li>
+              <li>Maritime Silk Road history</li>
+              <li>Local Fujian cuisine</li>
+              <li>Friendly local atmosphere</li>
+            </ul>
+          </div>
+          <a href="gallery.html" class="btn-destination">View Gallery</a>
+        </div>
+      </div>
+
+      <!-- Jiangxi -->
+      <div class="destination-card">
+        <div class="destination-image">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090635.jpg" alt="Jiangxi Ceramic">
+        </div>
+        <div class="destination-content">
+          <h3>Jiangxi</h3>
+          <span class="location-tag">🏞️ Central China</span>
+          <p>A province known for its beautiful landscapes and rich ceramic heritage. Jiangxi offers both natural beauty and cultural experiences with its unique pottery traditions.</p>
+          <div class="destination-highlights">
+            <h4>Highlights</h4>
+            <ul class="highlight-list">
+              <li>Unique ceramic art and crafts</li>
+              <li>Stunning mountain landscapes</li>
+              <li>Delicious traditional food</li>
+              <li>Historic villages and towns</li>
+            </ul>
+          </div>
+          <a href="gallery.html" class="btn-destination">View Gallery</a>
+        </div>
+      </div>
+    </div>
+    
+
+    
+    <div class="travel-tips">
+      <h2>Travel Tips</h2>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <h3>Wake Up Early</h3>
+          <p>Some of my best travel experiences happened early in the morning when crowds are smaller and the light is magical. Plus, you'll see locals starting their day!</p>
+        </div>
+        <div class="tip-card">
+          <h3>Try Local Food</h3>
+          <p>One of the best ways to experience a culture is through its food. Don't be afraid to try new things from street vendors or local markets.</p>
+        </div>
+        <div class="tip-card">
+          <h3>Pack Light</h3>
+          <p>I've learned the hard way that packing less makes traveling so much easier. Focus on versatile clothing and essential items.</p>
+        </div>
+        <div class="tip-card">
+          <h3>Get Lost Sometimes</h3>
+          <p>Some of my favorite discoveries happened when I wandered away from the tourist path. Just make sure you know how to get back!</p>
+        </div>
+        <div class="tip-card">
+          <h3>Connect With Locals</h3>
+          <p>Talking to local people can lead to incredible recommendations and a deeper understanding of the place you're visiting.</p>
+        </div>
+        <div class="tip-card">
+          <h3>Take Time to Relax</h3>
+          <p>It's easy to try to see everything, but don't forget to slow down and enjoy the moment. Sometimes the best memories come from just sitting and taking it all in.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <h3>Travel Memories</h3>
+        <p>Sharing beautiful moments and experiences from around the world.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="destinations.html">Destinations</a></li>
+          <li><a href="profile.html">About Me</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2023 Travel Memories. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

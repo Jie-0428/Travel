@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Photo Gallery - A collection of personal travel photos and memories from around the world.">
+  <title>Photo Gallery</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico">
+  <style>
+    /* Gallery specific styles */
+    #gallery {
+      padding: 80px 0;
+      text-align: center;
+    }
+    
+    #gallery h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    
+    #gallery p {
+      font-size: 20px;
+      color: #555;
+      max-width: 800px;
+      margin: 0 auto 60px;
+    }
+    
+    .gallery-filters {
+      margin-bottom: 40px;
+    }
+    
+    .filter-btn {
+      background-color: transparent;
+      border: 2px solid #3498db;
+      color: #3498db;
+      padding: 10px 20px;
+      margin: 0 10px 10px 0;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-btn:hover,
+    .filter-btn.active {
+      background-color: #3498db;
+      color: white;
+    }
+    
+    .gallery-grid {
+       display: grid;
+       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+       gap: 25px;
+       margin-bottom: 60px;
+     }
+    
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+    
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      color: white;
+      padding: 20px;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .gallery-item:hover .gallery-caption {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .gallery-caption h3 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    
+    .gallery-caption p {
+      font-size: 14px;
+      margin: 0;
+      opacity: 0.9;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .page-btn {
+      background-color: transparent;
+      border: 1px solid #ddd;
+      color: #555;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .page-btn:hover,
+    .page-btn.active {
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+    
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    @media (max-width: 768px) {
+      #gallery h1 {
+        font-size: 36px;
+      }
+      
+      #gallery p {
+        font-size: 18px;
+      }
+      
+      .gallery-filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .filter-btn {
+        margin: 5px;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+ <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <div class="brand">
+                  <div class="brand-logo">
+                    <svg xmlns=<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
+                    </div>
+                    <h2 class="brand-title">My Travel<span>Journey</span></h2>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="gallery.html" class="nav-link">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="destinations.html" class="nav-link">Destinations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.html" class="nav-link">About Me</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+  <div id="main-content">
+    <section id="gallery">
+      <h1>My Travel Photo Album</h1>
+      <p>Explore my personal collection of travel photos and memories from around the world. Each image captures special moments from my adventures.</p>
+      
+      <div class="gallery-filters">
+        <button class="filter-btn active" data-filter="all">All Memories</button>
+        <button class="filter-btn" data-filter="landscapes">Natural Wonders</button>
+        <button class="filter-btn" data-filter="cityscapes">City Explorations</button>
+        <button class="filter-btn" data-filter="cultural">Local Experiences</button>
+        <button class="filter-btn" data-filter="moment">Meaningful Moments</button>
+      </div>
+      
+      <div class="gallery-grid">
+        <!-- Landscape Images -->
+        <div class="gallery-item" data-category="landscapes">
+          <img src="C:\Users\21441\Desktop\web\photos\微信图片_20251022095600.jpg" alt="Beach Sunset">
+          <div class="gallery-caption">
+            <h3>Island Getaway</h3>
+            <p>Relaxing in Hainan</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item" data-category="landscapes">
+          <img src="C:\Users\21441\Desktop\web\photos\20251027-090604.jpg" alt="Island">
+          <div class="gallery-caption">
+            <h3>Island Fenjiezhou</h3>
+            <p>Climbing in Hainan</p>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="landscapes">
+          <img src="C:\Users\21441\Desktop\web\photos\20251027-090611.jpg" alt="Beach">
+          <div class="gallery-caption">
+            <h3>Beach Relaxation</h3>
+            <p>Relaxing in Hainan</p>
+          </div>
+        </div>
+        
+        <!-- Cityscape Images -->
+        <div class="gallery-item" data-category="cityscapes">
+          <img src="C:\Users\21441\Desktop\web\photos\20251027-090548.jpg" alt="Mountain Landscape">
+          <div class="gallery-caption">
+            <h3>unforgettable trip</h3>
+            <p>My trip to Nanjing</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item" data-category="cityscapes">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090543.jpg" alt="Cityscape">
+          <div class="gallery-caption">
+            <h3>popular tourist destination</h3>
+            <p>famous in Guangzhou museum</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item" data-category="cityscapes">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090600.jpg" alt="Historic Architecture">
+          <div class="gallery-caption">
+            <h3>postoffice</h3>
+            <p>Chaozhou has lots of delicious food</p>
+          </div>
+        </div>
+      
+        <!-- Cultural Images -->
+        <div class="gallery-item" data-category="cultural">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090655.jpg" alt="Temple">
+          <div class="gallery-caption">
+            <h3>My hometown</h3>
+            <p>My favorite places in Quanzhou</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item" data-category="cultural">
+          <img src="C:/Users/21441/Desktop/web/photos/20251027-090707.jpg" alt="historical site">
+          <div class="gallery-caption">
+            <h3>Cultural visiting</h3>
+            <p>Chruch s in koln</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item" data-category="cultural">
+          <img src="C:\Users\21441\Desktop\web\photos\20251027-090642.jpg" alt="traditional food">
+          <div class="gallery-caption">
+            <h3>Traditional food</h3>
+            <p>Delicious tastes of Jiangxi</p>
+          </div>
+        </div>
+        
+        <!-- moment -->
+        <div class="gallery-item" data-category="moment">
+          <img src="C:\Users\21441\Desktop\web\photos\20251027-090615.jpg" alt="visit a friend">
+          <div class="gallery-caption">
+            <h3>friend visiting</h3>
+            <p>Visit her school</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item" data-category="moment">
+          <img src="C:\Users\21441\Desktop\web\photos\20251027-090635.jpg" alt="interesting ceramic">
+          <div class="gallery-caption">
+            <h3>annoyed ceramic vase</h3>
+            <p>Unique ceramic in Jiangxi</p>
+          </div>
+        </div>
+        
+        <div class="gallery-item" data-category="moment">
+          <img src="C:\Users\21441\Desktop\web\photos\20251027-090639.jpg" alt="specific firework">
+          <div class="gallery-caption">
+            <h3>striking iron to create sparks</h3>
+            <p>specific firework in Jiangxi</p>
+          </div>
+        </div>
+      
+      <div class="pagination">
+        <button class="page-btn" disabled>Previous</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">Next</button>
+      </div>
+    </section>
+  </div>
+
+  <footer id="footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <h3>Travel Memories</h3>
+        <p>Sharing beautiful moments and experiences from around the world.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="destinations.html">Destinations</a></li>
+          <li><a href="profile.html">About Me</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2023 Travel Memories. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Simple filtering functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          const filter = this.getAttribute('data-filter');
+          
+          galleryItems.forEach(item => {
+            if (filter === 'all' || item.getAttribute('data-category') === filter) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+      
+      // Simple pagination functionality
+      const pageButtons = document.querySelectorAll('.page-btn');
+      
+      pageButtons.forEach(button => {
+        if (!button.disabled) {
+          button.addEventListener('click', function() {
+            pageButtons.forEach(btn => {
+              if (btn.textContent !== 'Previous' && btn.textContent !== 'Next') {
+                btn.classList.remove('active');
+              }
+            });
+            
+            if (this.textContent !== 'Previous' && this.textContent !== 'Next') {
+              this.classList.add('active');
+            }
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
