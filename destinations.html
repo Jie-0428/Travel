@@ -20,6 +20,94 @@
       background-position: center;
     }
     
+    /* Comment System Styles */
+    .comments-section {
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px solid #eee;
+      display: none;
+    }
+    
+    .toggle-comments {
+      background: none;
+      border: none;
+      color: #3498db;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 15px;
+      padding: 0;
+      text-decoration: underline;
+    }
+    
+    .toggle-comments:hover {
+      color: #2980b9;
+    }
+    
+    .comment-form {
+      margin-bottom: 20px;
+    }
+    
+    .comment-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    
+    .comment-submit {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .comment-submit:hover {
+      background-color: #2980b9;
+    }
+    
+    .comments-list {
+      display: none;
+    }
+    
+    .comment-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 15px;
+      padding: 12px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+    
+    .comment-avatar {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    
+    .comment-content {
+      flex: 1;
+    }
+    
+    .comment-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    
+    .comment-time {
+      font-size: 12px;
+      color: #777;
+    }
+    
     #destinations-hero h1 {
       font-size: 48px;
       font-weight: 700;
@@ -399,6 +487,19 @@
             </ul>
           </div>
           <a href="gallery.html" class="btn-destination">View Gallery</a>
+          
+          <!-- Comment System -->
+          <button class="toggle-comments" data-card-id="card-1">Show Comments</button>
+          <div id="comments-section-card-1" class="comments-section">
+            <h4>Leave a Comment</h4>
+            <form class="comment-form" data-card-id="card-1">
+              <textarea class="comment-input" placeholder="Share your thoughts about this destination..."></textarea>
+              <button type="submit" class="comment-submit">Post Comment</button>
+            </form>
+            <div class="comments-list" id="comments-card-1">
+              <!-- Comments will be added here -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -421,6 +522,19 @@
             </ul>
           </div>
           <a href="gallery.html" class="btn-destination">View Gallery</a>
+          
+          <!-- Comment System -->
+          <button class="toggle-comments" data-card-id="card-2">Show Comments</button>
+          <div id="comments-section-card-2" class="comments-section">
+            <h4>Leave a Comment</h4>
+            <form class="comment-form" data-card-id="card-2">
+              <textarea class="comment-input" placeholder="Share your thoughts about this destination..."></textarea>
+              <button type="submit" class="comment-submit">Post Comment</button>
+            </form>
+            <div class="comments-list" id="comments-card-2">
+              <!-- Comments will be added here -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -443,6 +557,19 @@
             </ul>
           </div>
           <a href="gallery.html" class="btn-destination">View Gallery</a>
+          
+          <!-- Comment System -->
+          <button class="toggle-comments" data-card-id="card-3">Show Comments</button>
+          <div id="comments-section-card-3" class="comments-section">
+            <h4>Leave a Comment</h4>
+            <form class="comment-form" data-card-id="card-3">
+              <textarea class="comment-input" placeholder="Share your thoughts about this destination..."></textarea>
+              <button type="submit" class="comment-submit">Post Comment</button>
+            </form>
+            <div class="comments-list" id="comments-card-3">
+              <!-- Comments will be added here -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -465,6 +592,19 @@
             </ul>
           </div>
           <a href="gallery.html" class="btn-destination">View Gallery</a>
+          
+          <!-- Comment System -->
+          <button class="toggle-comments" data-card-id="card-4">Show Comments</button>
+          <div id="comments-section-card-4" class="comments-section">
+            <h4>Leave a Comment</h4>
+            <form class="comment-form" data-card-id="card-4">
+              <textarea class="comment-input" placeholder="Share your thoughts about this destination..."></textarea>
+              <button type="submit" class="comment-submit">Post Comment</button>
+            </form>
+            <div class="comments-list" id="comments-card-4">
+              <!-- Comments will be added here -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -487,6 +627,19 @@
             </ul>
           </div>
           <a href="gallery.html" class="btn-destination">View Gallery</a>
+          
+          <!-- Comment System -->
+          <button class="toggle-comments" data-card-id="card-5">Show Comments</button>
+          <div id="comments-section-card-5" class="comments-section">
+            <h4>Leave a Comment</h4>
+            <form class="comment-form" data-card-id="card-5">
+              <textarea class="comment-input" placeholder="Share your thoughts about this destination..."></textarea>
+              <button type="submit" class="comment-submit">Post Comment</button>
+            </form>
+            <div class="comments-list" id="comments-card-5">
+              <!-- Comments will be added here -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -509,6 +662,19 @@
             </ul>
           </div>
           <a href="gallery.html" class="btn-destination">View Gallery</a>
+          
+          <!-- Comment System -->
+          <button class="toggle-comments" data-card-id="card-6">Show Comments</button>
+          <div id="comments-section-card-6" class="comments-section">
+            <h4>Leave a Comment</h4>
+            <form class="comment-form" data-card-id="card-6">
+              <textarea class="comment-input" placeholder="Share your thoughts about this destination..."></textarea>
+              <button type="submit" class="comment-submit">Post Comment</button>
+            </form>
+            <div class="comments-list" id="comments-card-6">
+              <!-- Comments will be added here -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -568,6 +734,116 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+      // 评论系统功能
+      document.addEventListener('DOMContentLoaded', function() {
+        // 为每个评论表单添加提交事件
+        const commentForms = document.querySelectorAll('.comment-form');
+        commentForms.forEach(form => {
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const cardId = this.dataset.cardId;
+            const commentInput = this.querySelector('.comment-input');
+            const commentText = commentInput.value.trim();
+            
+            if (commentText) {
+              // 创建新评论元素
+              const commentsList = document.querySelector(`#comments-${cardId}`);
+              const newComment = document.createElement('div');
+              newComment.className = 'comment-item';
+              newComment.innerHTML = `
+                <div class="comment-avatar">👤</div>
+                <div class="comment-content">
+                  <div class="comment-text">${commentText}</div>
+                  <div class="comment-time">${new Date().toLocaleString()}</div>
+                </div>
+              `;
+              
+              // 添加到评论列表
+              commentsList.appendChild(newComment);
+              
+              // 清空输入框
+              commentInput.value = '';
+              
+              // 显示评论区
+              commentsList.style.display = 'block';
+              
+              // 保存到localStorage (简单持久化)
+              saveCommentsToLocalStorage();
+            }
+          });
+        });
+        
+        // 加载保存的评论
+        loadCommentsFromLocalStorage();
+        
+        // 切换评论区显示/隐藏
+        const toggleButtons = document.querySelectorAll('.toggle-comments');
+        toggleButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const cardId = this.dataset.cardId;
+            const commentsSection = document.querySelector(`#comments-section-${cardId}`);
+            commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+            this.textContent = commentsSection.style.display === 'none' ? 'Show Comments' : 'Hide Comments';
+          });
+        });
+      });
+      
+      // 保存评论到localStorage
+      function saveCommentsToLocalStorage() {
+        const commentsData = {};
+        document.querySelectorAll('.destination-card').forEach((card, index) => {
+          const cardId = `card-${index + 1}`;
+          const commentsList = card.querySelector(`#comments-${cardId}`);
+          const comments = [];
+          
+          commentsList.querySelectorAll('.comment-item').forEach(comment => {
+            const text = comment.querySelector('.comment-text').textContent;
+            const time = comment.querySelector('.comment-time').textContent;
+            comments.push({ text, time });
+          });
+          
+          if (comments.length > 0) {
+            commentsData[cardId] = comments;
+          }
+        });
+        
+        localStorage.setItem('destinationComments', JSON.stringify(commentsData));
+      }
+      
+      // 从localStorage加载评论
+      function loadCommentsFromLocalStorage() {
+        const commentsData = JSON.parse(localStorage.getItem('destinationComments'));
+        if (commentsData) {
+          Object.keys(commentsData).forEach(cardId => {
+            const commentsSection = document.querySelector(`#comments-${cardId}`);
+            if (commentsSection) {
+              commentsData[cardId].forEach(comment => {
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-item';
+                newComment.innerHTML = `
+                  <div class="comment-avatar">👤</div>
+                  <div class="comment-content">
+                    <div class="comment-text">${comment.text}</div>
+                    <div class="comment-time">${comment.time}</div>
+                  </div>
+                `;
+                commentsSection.appendChild(newComment);
+              });
+              
+              // 如果有评论，显示评论区
+              if (commentsData[cardId].length > 0) {
+                commentsSection.style.display = 'block';
+                document.querySelector(`#comments-section-${cardId}`).style.display = 'block';
+                const toggleButton = document.querySelector(`.toggle-comments[data-card-id="${cardId}"]`);
+                if (toggleButton) {
+                  toggleButton.textContent = 'Hide Comments';
+                }
+              }
+            }
+          });
+        }
+      }
+    </script>
 </body>
 </html>
