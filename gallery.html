@@ -3,387 +3,938 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Photo Gallery - A collection of personal travel photos and memories from around the world.">
-  <title>Photo Gallery</title>
+  <meta name="description" content="Travel Experience Sharing - Upload and share your travel photos, videos, and stories with the world.">
+  <title>Travel Experience Sharing</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="favicon.ico">
   <style>
-    /* Gallery specific styles */
-    #gallery {
-      padding: 80px 0;
-      text-align: center;
+    /* Experience Sharing specific styles */
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --accent-color: #e67e22;
+      --dark-color: #2c3e50;
+      --light-color: #ecf0f1;
+      --danger-color: #e74c3c;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
-    #gallery h1 {
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f8f9fa;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header Styles */
+    .header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .header-container {
+      padding: 20px 0;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .brand-logo svg {
+      width: 32px;
+      height: 32px;
+      color: var(--primary-color);
+    }
+    
+    .brand-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dark-color);
+    }
+    
+    .brand-title span {
+      color: var(--primary-color);
+    }
+    
+    .nav-menu {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    
+    .nav-link {
+      text-decoration: none;
+      color: var(--dark-color);
+      font-weight: 500;
+      transition: color 0.3s ease;
+      padding: 8px 16px;
+      border-radius: 4px;
+    }
+    
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--primary-color);
+      background-color: rgba(52, 152, 219, 0.1);
+    }
+    
+    /* Hero Section */
+    .hero-section {
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('photos/微信图片_20251022095600.jpg') center/cover no-repeat;
+      color: white;
+      padding: 120px 0;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .hero-section h1 {
       font-size: 48px;
       margin-bottom: 20px;
-      color: #2c3e50;
+      font-weight: 700;
     }
     
-    #gallery p {
+    .hero-section p {
       font-size: 20px;
-      color: #555;
       max-width: 800px;
-      margin: 0 auto 60px;
-    }
-    
-    .gallery-filters {
-      margin-bottom: 40px;
-    }
-    
-    .filter-btn {
-      background-color: transparent;
-      border: 2px solid #3498db;
-      color: #3498db;
-      padding: 10px 20px;
-      margin: 0 10px 10px 0;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    
-    .filter-btn:hover,
-    .filter-btn.active {
-      background-color: #3498db;
-      color: white;
-    }
-    
-    .gallery-grid {
-       display: grid;
-       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-       gap: 25px;
-       margin-bottom: 60px;
-     }
-    
-    .gallery-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .gallery-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-    }
-    
-    .gallery-item img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-      display: block;
-    }
-    
-    .gallery-item:hover img {
-      transform: scale(1.05);
-    }
-    
-    .gallery-caption {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-      color: white;
-      padding: 20px;
-      transform: translateY(20px);
-      opacity: 0;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    
-    .gallery-item:hover .gallery-caption {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    
-    .gallery-caption h3 {
-      font-size: 18px;
-      margin-bottom: 5px;
-    }
-    
-    .gallery-caption p {
-      font-size: 14px;
-      margin: 0;
+      margin: 0 auto 30px;
       opacity: 0.9;
     }
     
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .page-btn {
-      background-color: transparent;
-      border: 1px solid #ddd;
-      color: #555;
-      padding: 10px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: all 0.3s ease;
-    }
-    
-    .page-btn:hover,
-    .page-btn.active {
-      background-color: #3498db;
+    .btn-primary {
+      background-color: var(--primary-color);
       color: white;
-      border-color: #3498db;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
     }
     
-    .page-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .btn-primary:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
     }
     
-    @media (max-width: 768px) {
-      #gallery h1 {
+    /* Upload Section */
+    .upload-section {
+      background-color: white;
+      padding: 40px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 60px;
+    }
+    
+    .upload-section h2 {
+      font-size: 32px;
+      margin-bottom: 30px;
+      color: var(--dark-color);
+      text-align: center;
+    }
+    
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .form-group label {
+      font-weight: 600;
+      color: var(--dark-color);
+      font-size: 16px;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="url"],
+    .form-group textarea {
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+    
+    .file-upload {
+      border: 2px dashed #ddd;
+      border-radius: var(--border-radius);
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      background-color: #f9f9f9;
+    }
+    
+    .file-upload:hover {
+      border-color: var(--primary-color);
+      background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    .file-upload input[type="file"] {
+      display: none;
+    }
+    
+    .file-upload-label {
+      display: block;
+      cursor: pointer;
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .file-upload-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    
+    .upload-options {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+    
+    .option-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #ddd;
+      background-color: white;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .option-btn:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .option-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+    
+    /* Experience Grid */
+    .experiences-section h2 {
+      font-size: 32px;
+      margin-bottom: 40px;
+      color: var(--dark-color);
+      text-align: center;
+    }
+    
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+    
+    .experience-card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .experience-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .experience-media {
+      height: 250px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .experience-media img,
+    .experience-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .experience-card:hover .experience-media img,
+    .experience-card:hover .experience-media video {
+      transform: scale(1.05);
+    }
+    
+    .media-type-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .experience-content {
+      padding: 20px;
+    }
+    
+    .experience-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+      font-weight: 700;
+    }
+    
+    .experience-location {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--primary-color);
+      font-weight: 500;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    
+    .experience-description {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .experience-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #888;
+    }
+    
+    .experience-actions {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+    
+    .action-btn:hover {
+      color: var(--primary-color);
+    }
+    
+    /* Categories */
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+      justify-content: center;
+    }
+    
+    .category-btn {
+      background-color: white;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 8px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .category-btn:hover,
+    .category-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    /* Featured Section */
+    .featured-section {
+      background-color: #f0f4f8;
+      padding: 60px 0;
+      margin-bottom: 60px;
+    }
+    
+    .featured-section h2 {
+      font-size: 32px;
+      margin-bottom: 40px;
+      color: var(--dark-color);
+      text-align: center;
+    }
+    
+    .featured-experience {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      background-color: white;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .featured-media {
+      height: 400px;
+    }
+    
+    .featured-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .featured-content {
+      padding: 40px;
+    }
+    
+    .featured-content h3 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      color: var(--dark-color);
+    }
+    
+    .featured-content p {
+      margin-bottom: 20px;
+      color: #666;
+      line-height: 1.8;
+    }
+    
+    /* Footer Styles */
+    .footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 60px 0 30px;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .footer-info h3,
+    .footer-links h4 {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .featured-experience {
+        grid-template-columns: 1fr;
+      }
+      
+      .featured-media {
+        height: 300px;
+      }
+      
+      .hero-section h1 {
         font-size: 36px;
       }
       
-      #gallery p {
+      .hero-section p {
         font-size: 18px;
       }
+    }
+    
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 20px;
+      }
       
-      .gallery-filters {
-        display: flex;
+      .nav-menu {
         flex-wrap: wrap;
         justify-content: center;
       }
       
-      .filter-btn {
-        margin: 5px;
+      .hero-section {
+        padding: 80px 0;
       }
       
-      .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
+      .hero-section h1 {
+        font-size: 28px;
+      }
+      
+      .upload-section {
+        padding: 25px;
+      }
+      
+      .experience-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .upload-options {
+        flex-direction: column;
+      }
+      
+      .featured-content {
+        padding: 25px;
+      }
+      
+      .featured-content h3 {
+        font-size: 24px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .experience-card {
+        margin: 0 -10px;
+        border-radius: 0;
+      }
+      
+      .category-btn {
+        padding: 6px 15px;
+        font-size: 14px;
       }
     }
   </style>
 </head>
 <body>
- <header class="header">
-        <div class="header-container">
-            <div class="header-content">
-                <div class="brand">
-                  <div class="brand-logo">
-                    <svg xmlns=<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
-                    </div>
-                    <h2 class="brand-title">My Travel<span>Journey</span></h2>
-                </div>
-                <ul class="nav-menu" id="navMenu">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="gallery.html" class="nav-link">Gallery</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="destinations.html" class="nav-link">Destinations</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="profile.html" class="nav-link">About Me</a>
-                    </li>
-                </ul>
-            </div>
+  <header class="header">
+    <div class="header-container container">
+      <div class="header-content">
+        <div class="brand">
+          <div class="brand-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
+          </div>
+          <h2 class="brand-title">Travel<span>Sharing</span></h2>
         </div>
-    </header>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="gallery.html" class="nav-link active">Experiences</a>
+          </li>
+          <li class="nav-item">
+            <a href="destinations.html" class="nav-link">Destinations</a>
+          </li>
+          <li class="nav-item">
+            <a href="profile.html" class="nav-link">About Me</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
 
   <div id="main-content">
-    <section id="gallery">
-      <h1>My Travel Photo Album</h1>
-      <p>Explore my personal collection of travel photos and memories from around the world. Each image captures special moments from my adventures.</p>
-      
-      <div class="gallery-filters">
-        <button class="filter-btn active" data-filter="all">All Memories</button>
-        <button class="filter-btn" data-filter="landscapes">Natural Wonders</button>
-        <button class="filter-btn" data-filter="cityscapes">City Explorations</button>
-        <button class="filter-btn" data-filter="cultural">Local Experiences</button>
-        <button class="filter-btn" data-filter="moment">Meaningful Moments</button>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <h1>Share Your Travel Adventures</h1>
+        <p>Upload your photos, videos, and stories to inspire others with your travel experiences from around the world.</p>
+        <a href="#upload" class="btn-primary">Start Sharing</a>
       </div>
-      
-      <div class="gallery-grid">
-        <!-- Landscape Images -->
-        <div class="gallery-item" data-category="landscapes">
-          <img src="photos/微信图片_20251022095600.jpg" alt="Beach Sunset">
-          <div class="gallery-caption">
-            <h3>Island Getaway</h3>
-            <p>Relaxing in Hainan</p>
+    </section>
+
+    <!-- Upload Section -->
+    <section id="upload" class="container">
+      <div class="upload-section">
+        <h2>Share Your Travel Experience</h2>
+        <form id="experience-form" class="upload-form">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" placeholder="Give your experience a title" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" placeholder="Where was this experience?" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Media Upload</label>
+            <div class="file-upload">
+              <input type="file" id="media-upload" accept="image/*,video/*" required>
+              <label for="media-upload" class="file-upload-label">
+                <div class="file-upload-icon">📷</div>
+                <div>Click or drag to upload photos or videos</div>
+                <div style="font-size: 12px; margin-top: 5px; color: #888;">Supports JPG, PNG, MP4 (max 10MB)</div>
+              </label>
+            </div>
+            <div class="upload-options">
+              <button type="button" class="option-btn active" data-type="photo">Photo</button>
+              <button type="button" class="option-btn" data-type="video">Video</button>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" placeholder="Share your thoughts, experiences, and insights from this journey..." required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" id="category" placeholder="e.g., Beach, Mountain, City, Cultural" required>
+          </div>
+          
+          <button type="submit" class="btn-primary">Share Experience</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="container">
+      <div class="categories">
+        <button class="category-btn active" data-category="all">All Experiences</button>
+        <button class="category-btn" data-category="beach">Beaches</button>
+        <button class="category-btn" data-category="mountain">Mountains</button>
+        <button class="category-btn" data-category="city">Cities</button>
+        <button class="category-btn" data-category="cultural">Cultural</button>
+        <button class="category-btn" data-category="adventure">Adventure</button>
+      </div>
+    </section>
+
+    <!-- Featured Experience -->
+    <section class="featured-section">
+      <div class="container">
+        <h2>Featured Experience</h2>
+        <div class="featured-experience">
+          <div class="featured-media">
+            <img src="photos/微信图片_20251022095600.jpg" alt="Beautiful Beach Sunset">
+          </div>
+          <div class="featured-content">
+            <h3>Sunset Paradise in Hainan</h3>
+            <div class="experience-location">📍 Hainan, China</div>
+            <p>This breathtaking sunset at Hainan Island was one of the most memorable moments of my entire journey. The sky painted with vibrant hues of orange, pink, and purple created a magical atmosphere that words can hardly describe.</p>
+            <p>As the sun slowly dipped below the horizon, I couldn't help but feel grateful for the opportunity to witness such natural beauty. The gentle sound of waves, the warm breeze, and the stunning colors made this moment truly special.</p>
+            <p>Travel tip: Arrive at least 30 minutes before sunset to fully appreciate the changing colors of the sky and find the perfect spot for photography.</p>
+            <div class="experience-actions">
+              <button class="action-btn">❤️ 128</button>
+              <button class="action-btn">💬 24</button>
+              <button class="action-btn">📤 Share</button>
+            </div>
           </div>
         </div>
-        
-        <div class="gallery-item" data-category="landscapes">
-          <img src="photos/20251027-090604.jpg" alt="Island">
-          <div class="gallery-caption">
-            <h3>Island Fenjiezhou</h3>
-            <p>Climbing in Hainan</p>
+      </div>
+    </section>
+
+    <!-- Experiences Grid -->
+    <section class="experiences-section container">
+      <h2>Recent Travel Experiences</h2>
+      <div class="experience-grid">
+        <!-- Experience 1 -->
+        <div class="experience-card" data-category="beach">
+          <div class="experience-media">
+            <img src="photos/20251027-090611.jpg" alt="Beach Relaxation">
+            <div class="media-type-badge">PHOTO</div>
+          </div>
+          <div class="experience-content">
+            <h3 class="experience-title">Tropical Paradise</h3>
+            <div class="experience-location">📍 Hainan, China</div>
+            <p class="experience-description">Spent a wonderful day relaxing on the pristine beaches of Hainan. The crystal clear waters and soft white sand made it the perfect place to unwind.</p>
+            <div class="experience-meta">
+              <span>Posted 2 days ago</span>
+              <div class="experience-actions">
+                <button class="action-btn">❤️ 86</button>
+                <button class="action-btn">💬 12</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="gallery-item" data-category="landscapes">
-          <img src="photos/20251027-090611.jpg" alt="Beach">
-          <div class="gallery-caption">
-            <h3>Beach Relaxation</h3>
-            <p>Relaxing in Hainan</p>
+        <!-- Experience 2 -->
+        <div class="experience-card" data-category="city">
+          <div class="experience-media">
+            <img src="photos/20251027-090543.jpg" alt="Guangzhou Museum">
+            <div class="media-type-badge">PHOTO</div>
+          </div>
+          <div class="experience-content">
+            <h3 class="experience-title">Cultural Journey</h3>
+            <div class="experience-location">📍 Guangzhou, China</div>
+            <p class="experience-description">Exploring the fascinating history of Guangzhou at this amazing museum. The artifacts and exhibitions provided a deep insight into the city's rich cultural heritage.</p>
+            <div class="experience-meta">
+              <span>Posted 1 week ago</span>
+              <div class="experience-actions">
+                <button class="action-btn">❤️ 102</button>
+                <button class="action-btn">💬 18</button>
+              </div>
+            </div>
           </div>
         </div>
-        
-        <!-- Cityscape Images -->
-        <div class="gallery-item" data-category="cityscapes">
-          <img src="photos/20251027-090548.jpg" alt="Mountain Landscape">
-          <div class="gallery-caption">
-            <h3>unforgettable trip</h3>
-            <p>My trip to Nanjing</p>
+
+        <!-- Experience 3 -->
+        <div class="experience-card" data-category="cultural">
+          <div class="experience-media">
+            <img src="photos/20251027-090655.jpg" alt="Quanzhou Temple">
+            <div class="media-type-badge">PHOTO</div>
+          </div>
+          <div class="experience-content">
+            <h3 class="experience-title">Sacred Spaces</h3>
+            <div class="experience-location">📍 Quanzhou, China</div>
+            <p class="experience-description">Visiting this ancient temple in my hometown of Quanzhou was a humbling experience. The architecture and spiritual atmosphere left me in awe.</p>
+            <div class="experience-meta">
+              <span>Posted 2 weeks ago</span>
+              <div class="experience-actions">
+                <button class="action-btn">❤️ 78</button>
+                <button class="action-btn">💬 9</button>
+              </div>
+            </div>
           </div>
         </div>
-        
-        <div class="gallery-item" data-category="cityscapes">
-          <img src="photos/20251027-090543.jpg" alt="Cityscape">
-          <div class="gallery-caption">
-            <h3>popular tourist destination</h3>
-            <p>famous in Guangzhou museum</p>
+
+        <!-- Experience 4 -->
+        <div class="experience-card" data-category="adventure">
+          <div class="experience-media">
+            <img src="photos/20251027-090604.jpg" alt="Mountain Climbing">
+            <div class="media-type-badge">PHOTO</div>
+          </div>
+          <div class="experience-content">
+            <h3 class="experience-title">Summit Victory</h3>
+            <div class="experience-location">📍 Fenjiezhou Island, China</div>
+            <p class="experience-description">The challenging climb to the top of Fenjiezhou Island was absolutely worth it! The panoramic views from the summit took my breath away.</p>
+            <div class="experience-meta">
+              <span>Posted 3 weeks ago</span>
+              <div class="experience-actions">
+                <button class="action-btn">❤️ 132</button>
+                <button class="action-btn">💬 21</button>
+              </div>
+            </div>
           </div>
         </div>
-        
-        <div class="gallery-item" data-category="cityscapes">
-          <img src="photos/20251027-090600.jpg" alt="Historic Architecture">
-          <div class="gallery-caption">
-            <h3>postoffice</h3>
-            <p>Chaozhou has lots of delicious food</p>
+
+        <!-- Experience 5 -->
+        <div class="experience-card" data-category="city">
+          <div class="experience-media">
+            <img src="photos/20251027-090548.jpg" alt="Nanjing Trip">
+            <div class="media-type-badge">PHOTO</div>
+          </div>
+          <div class="experience-content">
+            <h3 class="experience-title">Historical Nanjing</h3>
+            <div class="experience-location">📍 Nanjing, China</div>
+            <p class="experience-description">Walking through the historic streets of Nanjing felt like stepping back in time. This city perfectly blends ancient history with modern charm.</p>
+            <div class="experience-meta">
+              <span>Posted 1 month ago</span>
+              <div class="experience-actions">
+                <button class="action-btn">❤️ 94</button>
+                <button class="action-btn">💬 15</button>
+              </div>
+            </div>
           </div>
         </div>
-      
-        <!-- Cultural Images -->
-        <div class="gallery-item" data-category="cultural">
-          <img src="photos/20251027-090655.jpg" alt="Temple">
-          <div class="gallery-caption">
-            <h3>My hometown</h3>
-            <p>My favorite places in Quanzhou</p>
+
+        <!-- Experience 6 -->
+        <div class="experience-card" data-category="cultural">
+          <div class="experience-media">
+            <img src="photos/20251027-090642.jpg" alt="Traditional Food">
+            <div class="media-type-badge">PHOTO</div>
+          </div>
+          <div class="experience-content">
+            <h3 class="experience-title">Culinary Adventure</h3>
+            <div class="experience-location">📍 Jiangxi, China</div>
+            <p class="experience-description">Exploring the traditional cuisine of Jiangxi was a highlight of my trip. The local flavors and cooking techniques were fascinating to discover.</p>
+            <div class="experience-meta">
+              <span>Posted 1 month ago</span>
+              <div class="experience-actions">
+                <button class="action-btn">❤️ 117</button>
+                <button class="action-btn">💬 27</button>
+              </div>
+            </div>
           </div>
         </div>
-        
-        <div class="gallery-item" data-category="cultural">
-          <img src="photos/20251027-090707.jpg" alt="historical site">
-          <div class="gallery-caption">
-            <h3>Cultural visiting</h3>
-            <p>Chruch s in koln</p>
-          </div>
-        </div>
-        
-        <div class="gallery-item" data-category="cultural">
-          <img src="photos/20251027-090642.jpg" alt="traditional food">
-          <div class="gallery-caption">
-            <h3>Traditional food</h3>
-            <p>Delicious tastes of Jiangxi</p>
-          </div>
-        </div>
-        
-        <!-- moment -->
-        <div class="gallery-item" data-category="moment">
-          <img src="photos/20251027-090615.jpg" alt="visit a friend">
-          <div class="gallery-caption">
-            <h3>friend visiting</h3>
-            <p>Visit her school</p>
-          </div>
-        </div>
-        
-        <div class="gallery-item" data-category="moment">
-          <img src="photos/20251027-090635.jpg" alt="interesting ceramic">
-          <div class="gallery-caption">
-            <h3>annoyed ceramic vase</h3>
-            <p>Unique ceramic in Jiangxi</p>
-          </div>
-        </div>
-        
-        <div class="gallery-item" data-category="moment">
-          <img src="photos/20251027-090639.jpg" alt="specific firework">
-          <div class="gallery-caption">
-            <h3>striking iron to create sparks</h3>
-            <p>specific firework in Jiangxi</p>
-          </div>
-        </div>
-      
-      <div class="pagination">
-        <button class="page-btn" disabled>Previous</button>
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">Next</button>
       </div>
     </section>
   </div>
 
-  <footer id="footer">
-    <div class="footer-content">
-      <div class="footer-info">
-        <h3>Travel Memories</h3>
-        <p>Sharing beautiful moments and experiences from around the world.</p>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-info">
+          <h3>TravelSharing</h3>
+          <p>A platform for travelers to share their adventures, photos, videos, and stories with the world.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="gallery.html">Experiences</a></li>
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="profile.html">About Me</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Categories</h4>
+          <ul>
+            <li><a href="#">Beaches</a></li>
+            <li><a href="#">Mountains</a></li>
+            <li><a href="#">Cities</a></li>
+            <li><a href="#">Cultural</a></li>
+            <li><a href="#">Adventure</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
-          <li><a href="destinations.html">Destinations</a></li>
-          <li><a href="profile.html">About Me</a></li>
-        </ul>
+      <div class="footer-bottom">
+        <p>&copy; 2023 TravelSharing. All rights reserved.</p>
       </div>
-
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2023 Travel Memories. All rights reserved.</p>
     </div>
   </footer>
 
   <script>
-    // Simple filtering functionality
     document.addEventListener('DOMContentLoaded', function() {
-      const filterButtons = document.querySelectorAll('.filter-btn');
-      const galleryItems = document.querySelectorAll('.gallery-item');
-      
-      filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          // Remove active class from all buttons
-          filterButtons.forEach(btn => btn.classList.remove('active'));
-          // Add active class to clicked button
+      // Option buttons for media type
+      const optionBtns = document.querySelectorAll('.option-btn');
+      optionBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          optionBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // Category filtering
+      const categoryBtns = document.querySelectorAll('.category-btn');
+      const experienceCards = document.querySelectorAll('.experience-card');
+
+      categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Update active button
+          categoryBtns.forEach(b => b.classList.remove('active'));
           this.classList.add('active');
           
-          const filter = this.getAttribute('data-filter');
+          const category = this.getAttribute('data-category');
           
-          galleryItems.forEach(item => {
-            if (filter === 'all' || item.getAttribute('data-category') === filter) {
-              item.style.display = 'block';
+          // Filter cards
+          experienceCards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+              card.style.display = 'block';
             } else {
-              item.style.display = 'none';
+              card.style.display = 'none';
             }
           });
         });
       });
-      
-      // Simple pagination functionality
-      const pageButtons = document.querySelectorAll('.page-btn');
-      
-      pageButtons.forEach(button => {
-        if (!button.disabled) {
-          button.addEventListener('click', function() {
-            pageButtons.forEach(btn => {
-              if (btn.textContent !== 'Previous' && btn.textContent !== 'Next') {
-                btn.classList.remove('active');
-              }
-            });
-            
-            if (this.textContent !== 'Previous' && this.textContent !== 'Next') {
-              this.classList.add('active');
+
+      // Like button functionality
+      const likeBtns = document.querySelectorAll('.action-btn');
+      likeBtns.forEach(btn => {
+        if (btn.textContent.includes('❤️')) {
+          btn.addEventListener('click', function() {
+            let count = parseInt(this.textContent.match(/\d+/)[0]);
+            if (this.classList.contains('liked')) {
+              count--;
+              this.classList.remove('liked');
+              this.innerHTML = `❤️ ${count}`;
+            } else {
+              count++;
+              this.classList.add('liked');
+              this.innerHTML = `❤️ ${count}`;
             }
           });
         }
       });
+
+      // Experience form submission
+      const experienceForm = document.getElementById('experience-form');
+      if (experienceForm) {
+        experienceForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Get form data
+          const title = document.getElementById('title').value;
+          const location = document.getElementById('location').value;
+          const description = document.getElementById('description').value;
+          const category = document.getElementById('category').value;
+          const mediaUpload = document.getElementById('media-upload').files[0];
+          const mediaType = document.querySelector('.option-btn.active').getAttribute('data-type');
+          
+          // Basic validation
+          if (!title || !location || !description || !category || !mediaUpload) {
+            alert('Please fill in all fields and upload a media file.');
+            return;
+          }
+          
+          // In a real application, we would upload the file to a server
+          // For this demo, we'll just show a success message
+          alert('Your travel experience has been shared successfully!');
+          
+          // Reset form
+          experienceForm.reset();
+          optionBtns.forEach(b => b.classList.remove('active'));
+          optionBtns[0].classList.add('active');
+        });
+      }
+
+      // File upload preview (in a real app)
+      const mediaUpload = document.getElementById('media-upload');
+      if (mediaUpload) {
+        mediaUpload.addEventListener('change', function() {
+          const file = this.files[0];
+          if (file) {
+            // Display file name or preview in a real app
+            console.log('Selected file:', file.name);
+          }
+        });
+      }
     });
   </script>
 </body>
