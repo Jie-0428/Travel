@@ -227,10 +227,29 @@
     
     .destinations-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 40px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
       margin-bottom: 80px;
       padding: 0 20px;
+    }
+    
+    /* Responsive design for destinations grid */
+    @media (max-width: 1200px) {
+      .destinations-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    @media (max-width: 992px) {
+      .destinations-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .destinations-grid {
+        grid-template-columns: 1fr;
+      }
     }
     
     .destination-card {
