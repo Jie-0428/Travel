@@ -1868,6 +1868,460 @@
           });
         }
       }
+      // 从localStorage加载并显示用户上传的体验 - 增强版
+      function loadUserExperiences() {
+        console.log('开始加载用户体验...');
+        try {
+          // 调试：检查localStorage内容
+          console.log('localStorage中的键:', Object.keys(localStorage));
+          const storedData = localStorage.getItem('userExperiences');
+          console.log('获取到的原始体验数据:', storedData ? `存在 (${storedData.length} 字符)` : '不存在');
+          
+          // 显示加载状态
+          const userExperiencesGrid = document.getElementById('user-experiences-grid');
+          if (userExperiencesGrid) {
+            userExperiencesGrid.innerHTML = `
+              <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                <div style="display: inline-block; width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p style="margin-top: 20px; color: #7f8c8d;">正在加载体验数据...</p>
+                <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+              </div>
+            `;
+          }
+          
+          // 获取localStorage中的体验数据，添加全面的错误处理
+          let experiences = [];
+          try {
+            if (storedData) {
+              // 先验证JSON格式是否有效
+              if (storedData.trim() === '[]') {
+                // 空数组情况
+                console.log('体验数据为空数组');
+                experiences = [];
+              } else if (storedData.startsWith('[') && storedData.endsWith(']')) {
+                experiences = JSON.parse(storedData);
+                // 确保是数组
+                if (!Array.isArray(experiences)) {
+                  console.error('体验数据不是数组格式，重置为空数组');
+                  experiences = [];
+                }
+              } else {
+                console.error('体验数据格式错误，不是有效的JSON数组');
+                experiences = [];
+              }
+            }
+          } catch (parseError) {
+            console.error('解析体验数据失败:', parseError);
+            // 如果解析失败，尝试移除损坏的数据
+            try {
+              console.log('尝试清除损坏的体验数据');
+              localStorage.removeItem('userExperiences');
+              console.log('已清除损坏的体验数据');
+            } catch (clearError) {
+              console.error('清除localStorage失败:', clearError);
+            }
+            experiences = [];
+          }
+          
+          console.log('加载到的体验数量:', experiences.length);
+          
+          // 获取或创建用户体验部分
+          let userExperiencesSection = document.getElementById('user-experiences-section');
+          
+          if (!userExperiencesSection) {
+            // 创建新的用户体验部分
+            const mainContent = document.querySelector('.container:last-of-type') || document.querySelector('main');
+            if (mainContent) {
+              console.log('创建新的用户体验部分...');
+              userExperiencesSection = document.createElement('section');
+              userExperiencesSection.id = 'user-experiences-section';
+              userExperiencesSection.className = 'container';
+              userExperiencesSection.innerHTML = `
+                <h2 style="text-align: center; font-size: 36px; color: #2c3e50; margin: 60px 0 40px;">我的共享体验</h2>
+                <div id="user-experiences-grid" class="destinations-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
+              `;
+              
+              // 插入到主内容之后
+              mainContent.parentNode.insertBefore(userExperiencesSection, mainContent.nextSibling);
+              console.log('用户体验部分创建成功');
+            }
+          }
+          
+          // 再次获取用户体验网格
+          const finalUserExperiencesGrid = document.getElementById('user-experiences-grid');
+          if (finalUserExperiencesGrid) {
+            // 清空网格
+            finalUserExperiencesGrid.innerHTML = '';
+            
+            // 执行数据验证和清理
+            const validExperiences = experiences.filter(exp => {
+              // 更严格的数据验证
+              if (!exp || typeof exp !== 'object') {
+                console.log('跳过非对象体验数据:', exp);
+                return false;
+              }
+              
+              // 检查必要字段
+              if (!exp.id || !exp.mediaUrl) {
+                console.log('跳过缺少关键字段的体验数据:', exp);
+                return false;
+              }
+              
+              // 验证mediaUrl格式是否合理
+              const mediaUrl = String(exp.mediaUrl);
+              if (!mediaUrl.startsWith('data:') && !mediaUrl.startsWith('http://') && !mediaUrl.startsWith('https://')) {
+                console.log('跳过无效的媒体URL格式:', mediaUrl);
+                return false;
+              }
+              
+              return true;
+            });
+            
+            console.log('有效体验数量:', validExperiences.length);
+            
+            if (validExperiences.length > 0) {
+              // 确保按发布日期排序（最新的在前）
+              const sortedExperiences = validExperiences.sort((a, b) => {
+                const dateA = new Date(a.postedDate || 0);
+                const dateB = new Date(b.postedDate || 0);
+                return dateB - dateA;
+              });
+              
+              console.log('排序后开始渲染体验卡片...');
+              
+              sortedExperiences.forEach(experience => {
+                console.log('处理体验:', experience.id, experience.title);
+                
+                const newCard = document.createElement('div');
+                newCard.className = 'destination-card';
+                newCard.dataset.destinationId = experience.id;
+                  
+                  // 确保mediaUrl有效，添加备用图片和安全的URL转义
+                  const safeMediaUrl = String(experience.mediaUrl).replace(/"/g, '&quot;');
+                  const fallbackImage = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa21%20text%20%7B%20fill%3A%23999%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa21%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23555%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22247%22%20y%3D%22218.3%22%3E暂无图片%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';
+                  const mediaUrl = safeMediaUrl || fallbackImage;
+                  const mediaType = experience.mediaType ? String(experience.mediaType).toLowerCase() : 'photo'; // 默认为照片类型
+                  
+                  // 安全的标题转义
+                  const safeTitle = (experience.title || '未命名体验').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                  const safeLocation = (experience.location || '未知位置').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                  const safeDescription = (experience.description || '暂无描述').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                  
+                  // 根据媒体类型创建不同的元素
+                  let mediaElement;
+                  if (mediaType === 'photo') {
+                    // 增强的图片元素，包含加载状态和错误处理
+                    mediaElement = `
+                      <div class="image-container" style="position: relative; width: 100%; height: 200px; background: #f5f5f5; overflow: hidden;">
+                        <img src="${mediaUrl}" 
+                             alt="${safeTitle}" 
+                             style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease;"
+                             onload="this.style.opacity = '1'; this.previousElementSibling.style.display = 'none';"
+                             onerror="this.src='${fallbackImage}'; this.style.opacity = '1'; this.previousElementSibling.style.display = 'none';"
+                             loading="lazy">
+                        <div class="image-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                      </div>
+                    `;
+                  } else if (mediaType === 'video') {
+                    // 增强的视频元素
+                    mediaElement = `
+                      <div class="video-container" style="position: relative; width: 100%; height: 200px; background: #000; overflow: hidden;">
+                        <video src="${mediaUrl}" 
+                               controls 
+                               style="width: 100%; height: 100%; object-fit: cover;"
+                               oncanplay="this.style.opacity = '1'; this.previousElementSibling.style.display = 'none';">
+                          您的浏览器不支持视频播放
+                        </video>
+                        <div class="video-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                      </div>
+                    `;
+                  } else {
+                    // 未知类型，默认使用图片，确保安全性
+                    mediaElement = `
+                      <div class="media-container" style="position: relative; width: 100%; height: 200px; background: #f5f5f5; overflow: hidden;">
+                        <img src="${mediaUrl}" 
+                             alt="${safeTitle}" 
+                             style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease;"
+                             onload="this.style.opacity = '1'; this.previousElementSibling.style.display = 'none';"
+                             onerror="this.src='${fallbackImage}'; this.style.opacity = '1'; this.previousElementSibling.style.display = 'none';"
+                             loading="lazy">
+                        <div class="media-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                      </div>
+                    `;
+                  }
+                  
+                  newCard.innerHTML = `
+                    <div class="destination-image" style="position: relative;">
+                      ${mediaElement}
+                      <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px;">
+                        ${mediaType.toUpperCase()}
+                      </div>
+                    </div>
+                    <div class="destination-content">
+                      <h3 style="margin-top: 0; color: #2c3e50;">${experience.title || '未命名体验'}</h3>
+                      <span class="location-tag" style="color: #e74c3c;">📍 ${experience.location || '未知位置'}</span>
+                      <p style="margin: 15px 0; color: #7f8c8d; line-height: 1.5; height: 70px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">${experience.description || '暂无描述'}</p>
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                        <span style="color: #7f8c8d; font-size: 14px;">发布于 ${experience.postedDate || '刚刚'}</span>
+                        <div style="display: flex; gap: 15px;">
+                          <button class="like-btn" data-experience-id="${experience.id}" style="background: none; border: none; color: #7f8c8d; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                            ❤️ <span>${experience.likes || 0}</span>
+                          </button>
+                          <span style="color: #7f8c8d;">💬 ${experience.comments || 0}</span>
+                        </div>
+                      </div>
+                      <button class="toggle-comments" data-card-id="${experience.id}" style="margin-top: 15px; padding: 8px 16px; background: #ecf0f1; border: none; border-radius: 4px; cursor: pointer;">显示评论</button>
+                      <div class="comments-section" id="comments-section-${experience.id}" style="display: none; margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 4px;">
+                        <div class="comment-form">
+                          <textarea class="comment-input" placeholder="分享你的想法..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: vertical;"></textarea>
+                          <button class="comment-submit" style="margin-top: 10px; padding: 8px 16px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">发表评论</button>
+                        </div>
+                        <div class="comments-list" id="comments-${experience.id}" style="margin-top: 15px;"></div>
+                      </div>
+                    </div>
+                  `;
+                  
+                  userExperiencesGrid.appendChild(newCard);
+                  
+                  // 绑定评论功能
+                  const toggleBtn = newCard.querySelector('.toggle-comments');
+                  if (toggleBtn) {
+                    toggleBtn.addEventListener('click', function() {
+                      const cardId = this.getAttribute('data-card-id');
+                      const commentsSection = document.getElementById(`comments-section-${cardId}`);
+                      if (commentsSection.style.display === 'block') {
+                        commentsSection.style.display = 'none';
+                        this.textContent = '显示评论';
+                      } else {
+                        commentsSection.style.display = 'block';
+                        this.textContent = '隐藏评论';
+                      }
+                    });
+                  }
+                  
+                  // 绑定点赞功能
+                  const likeBtn = newCard.querySelector('.like-btn');
+                  if (likeBtn) {
+                    likeBtn.addEventListener('click', function() {
+                      const experienceId = this.getAttribute('data-experience-id');
+                      const likeCount = this.querySelector('span');
+                      let count = parseInt(likeCount.textContent) || 0;
+                      
+                      if (this.classList.contains('liked')) {
+                        count--;
+                        this.classList.remove('liked');
+                        this.style.color = '#7f8c8d';
+                      } else {
+                        count++;
+                        this.classList.add('liked');
+                        this.style.color = '#e74c3c';
+                      }
+                      
+                      likeCount.textContent = count;
+                      
+                      // 更新localStorage中的点赞数
+                      updateExperienceLikes(experienceId, count);
+                    });
+                  }
+                  
+                  const commentSubmitBtn = newCard.querySelector('.comment-submit');
+                  const commentInput = newCard.querySelector('.comment-input');
+                  const commentsList = newCard.querySelector('.comments-list');
+                  
+                  // 添加图片错误处理
+                  const img = newCard.querySelector('img');
+                  if (img) {
+                    img.onerror = function() {
+                      console.log('图片加载失败，使用默认图片');
+                      this.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa21%20text%20%7B%20fill%3A%23999%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa21%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23555%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22247%22%20y%3D%22218.3%22%3E图片加载失败%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';
+                    };
+                  }
+                  
+                  if (commentSubmitBtn && commentInput && commentsList) {
+                    commentSubmitBtn.addEventListener('click', function() {
+                      const text = commentInput.value.trim();
+                      if (text) {
+                        const cardId = newCard.dataset.destinationId;
+                        addComment(cardId, text);
+                        commentInput.value = '';
+                      }
+                    });
+                  }
+                  
+                  // 添加键盘事件监听
+                  if (commentInput) {
+                    commentInput.addEventListener('keypress', function(e) {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        if (commentSubmitBtn) {
+                          commentSubmitBtn.click();
+                        }
+                      }
+                    });
+                  }
+                });
+              } else {
+                // 没有有效的体验数据
+                userExperiencesGrid.innerHTML = `
+                  <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                    <p style="font-size: 18px; color: #7f8c8d;">没有找到有效的体验数据</p>
+                    <p style="margin-top: 20px;">
+                      <a href="gallery.html" style="background-color: #3498db; color: white; padding: 12px 24px; border-radius: 4px; text-decoration: none; display: inline-block;">
+                        分享你的第一个体验
+                      </a>
+                    </p>
+                  </div>
+                `;
+              }
+            } else {
+              // 如果没有体验，显示提示信息
+              userExperiencesGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                  <p style="font-size: 18px; color: #7f8c8d;">您还没有分享任何体验</p>
+                  <p style="margin-top: 20px;">
+                    <a href="gallery.html" style="background-color: #3498db; color: white; padding: 12px 24px; border-radius: 4px; text-decoration: none; display: inline-block;">
+                      分享你的第一个体验
+                    </a>
+                  </p>
+                </div>
+              `;
+            }
+          }
+          
+          // 加载已保存的评论
+          loadCommentsFromLocalStorage();
+        } catch (error) {
+          console.error('Error loading user experiences:', error);
+          // 显示错误提示
+          const userExperiencesGrid = document.getElementById('user-experiences-grid');
+          if (userExperiencesGrid) {
+            userExperiencesGrid.innerHTML = `
+              <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                <p style="font-size: 18px; color: #e74c3c;">加载体验时发生错误</p>
+                <p style="margin-top: 20px;">请刷新页面重试</p>
+              </div>
+            `;
+          }
+        }
+      }
+      
+      // 更新体验的点赞数 - 增强版
+      function updateExperienceLikes(experienceId, likes) {
+        console.log('更新体验点赞数:', experienceId, likes);
+        try {
+          // 获取体验数据
+          let experiences = [];
+          const storedData = localStorage.getItem('userExperiences');
+          
+          if (storedData) {
+            experiences = JSON.parse(storedData);
+            if (!Array.isArray(experiences)) {
+              console.error('体验数据不是数组格式');
+              experiences = [];
+            }
+          }
+          
+          // 查找并更新对应的体验
+          const experienceIndex = experiences.findIndex(exp => exp && exp.id === experienceId);
+          
+          if (experienceIndex !== -1) {
+            console.log('找到体验，更新点赞数');
+            experiences[experienceIndex].likes = likes;
+            
+            // 保存回localStorage
+            try {
+              localStorage.setItem('userExperiences', JSON.stringify(experiences));
+              console.log('点赞数更新成功');
+              
+              // 触发storage事件，通知其他页面更新
+              try {
+                localStorage.setItem('storageTrigger', Date.now().toString());
+                setTimeout(() => {
+                  localStorage.removeItem('storageTrigger');
+                }, 100);
+              } catch (e) {
+                console.error('触发storage事件失败:', e);
+              }
+            } catch (saveError) {
+              console.error('保存点赞数失败:', saveError);
+            }
+          } else {
+            console.log('未找到对应的体验');
+          }
+        } catch (error) {
+          console.error('更新体验点赞数失败:', error);
+        }
+      }
+      
+      // 监听storage事件，当gallery.html更新时自动刷新体验列表 - 增强版
+      window.addEventListener('storage', function(event) {
+        console.log('检测到storage事件:', event.key);
+        
+        // 响应多种同步触发器，确保兼容性
+        const syncKeys = ['userExperiences', 'storageTrigger', 'userExperiencesSync', 'userExperiencesUpdated'];
+        
+        if (syncKeys.includes(event.key)) {
+          console.log(`接收到${event.key}更新事件，准备重新加载体验数据...`);
+          
+          // 使用智能延迟策略，根据触发键类型调整延迟时间
+          const delay = event.key === 'userExperiences' ? 100 : 200;
+          
+          setTimeout(() => {
+            try {
+              console.log('执行体验数据重载');
+              loadUserExperiences();
+            } catch (reloadError) {
+              console.error('重载体验数据失败，尝试重试...', reloadError);
+              
+              // 失败时重试机制
+              setTimeout(() => {
+                try {
+                  loadUserExperiences();
+                } catch (finalError) {
+                  console.error('最终重试失败:', finalError);
+                  
+                  // 显示用户友好的错误提示并提供手动刷新选项
+                  const userExperiencesGrid = document.getElementById('user-experiences-grid');
+                  if (userExperiencesGrid) {
+                    userExperiencesGrid.innerHTML = `
+                      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                        <p style="font-size: 18px; color: #e74c3c;">同步新体验时遇到问题</p>
+                        <p style="margin-top: 20px;">
+                          <button id="force-reload-btn" style="background-color: #3498db; color: white; padding: 12px 24px; border-radius: 4px; border: none; cursor: pointer;">
+                            手动刷新体验
+                          </button>
+                        </p>
+                      </div>
+                    `;
+                    
+                    // 绑定手动刷新按钮事件
+                    const reloadBtn = document.getElementById('force-reload-btn');
+                    if (reloadBtn) {
+                      reloadBtn.addEventListener('click', () => {
+                        loadUserExperiences();
+                      });
+                    }
+                  }
+                }
+              }, 1000); // 1秒后重试
+            }
+          }, delay);
+        }
+      });
+      
+      // 添加页面可见性变化监听，当页面重新获得焦点时刷新数据
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+          console.log('页面重新获得焦点，检查最新体验数据...');
+          // 使用防抖避免频繁刷新
+          setTimeout(() => {
+            loadUserExperiences();
+          }, 300);
+        }
+      });
+      
+      // 页面加载时加载用户体验
+      loadUserExperiences();
     </script>
 </body>
 </html>
