@@ -909,32 +909,86 @@
           
           // Basic validation
           if (!title || !location || !description || !category || !mediaUpload) {
-            alert('Please fill in all fields and upload a media file.');
+            alert('请填写所有字段并上传媒体文件。');
             return;
           }
           
-          // In a real application, we would upload the file to a server
-          // For this demo, we'll just show a success message
-          alert('Your travel experience has been shared successfully!');
+          // Create FormData object
+          const formData = new FormData();
+          formData.append('title', title);
+          formData.append('location', location);
+          formData.append('description', description);
+          formData.append('category', category);
+          formData.append('media', mediaUpload);
           
-          // Reset form
-          experienceForm.reset();
-          optionBtns.forEach(b => b.classList.remove('active'));
-          optionBtns[0].classList.add('active');
+          // Show loading state
+          const submitButton = this.querySelector('button[type="submit"]');
+          const originalText = submitButton.textContent;
+          submitButton.disabled = true;
+          submitButton.textContent = '上传中...';
+          
+          // Upload to backend API
+          fetch('http://localhost:3000/api/upload', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert('您的旅行体验已成功分享！');
+              // Reset form
+              experienceForm.reset();
+              optionBtns.forEach(b => b.classList.remove('active'));
+              optionBtns[0].classList.add('active');
+              
+              // You could also reload the experiences list here
+              // loadExperiences();
+            } else {
+              alert('上传失败: ' + data.message);
+            }
+          })
+          .catch(error => {
+            console.error('Error uploading experience:', error);
+            alert('上传失败，请稍后再试。');
+          })
+          .finally(() => {
+            // Restore button state
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+          });
         });
       }
 
-      // File upload preview (in a real app)
+      // File upload preview
       const mediaUpload = document.getElementById('media-upload');
       if (mediaUpload) {
         mediaUpload.addEventListener('change', function() {
           const file = this.files[0];
           if (file) {
-            // Display file name or preview in a real app
             console.log('Selected file:', file.name);
+            // You could add preview functionality here
           }
         });
       }
+
+      // Function to load experiences from API
+      function loadExperiences() {
+        fetch('http://localhost:3000/api/experiences')
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              console.log('Loaded experiences:', data.data);
+              // Here you would update the UI with the experiences
+              // renderExperiences(data.data);
+            }
+          })
+          .catch(error => {
+            console.error('Error loading experiences:', error);
+          });
+      }
+
+      // Load experiences when page loads
+      // loadExperiences();
     });
   </script>
 </body>
