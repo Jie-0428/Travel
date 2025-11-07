@@ -1,0 +1,1 @@
+**TravelScapes** is a platform for sharing travel and scenery, created to give myself a community where I can share and discover beautiful places around the world. Here, I can upload photos, videos, and written descriptions from my journeys, documenting the wonderful moments of my life captured through different photography devices.
